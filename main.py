@@ -28,6 +28,7 @@ message_delay = 15
 @dp.message(commands=['reflink'], commands_prefix='/')
 async def filter_message(message: types.Message):
     await message.delete()
+    print(message.chat.id)
     if not message.from_user.username in refs.keys():
         link = await bot.create_chat_invite_link(
             chat_id=CHAT_ID,
