@@ -34,7 +34,7 @@ async def filter_message(message: types.Message):
     print(message.chat.id)
     if not message.from_user.username in refs.keys():
         link = await bot.create_chat_invite_link(
-            chat_id=CHAT_ID,
+            chat_id=TEST_CHAT_ID,
             name=message.from_user.username,
             expire_date=datetime.now() + timedelta(14),
             member_limit=9999
