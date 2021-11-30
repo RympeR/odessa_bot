@@ -10,7 +10,7 @@ import json
 
 BOT_TOKEN = "2125858661:AAE8aIV6joGpotg7dQ_dmDuZQnNn7PwsxTE"
 TEST_CHAT_ID = -1001698115602
-CHAT_ID = -1761446795
+CHAT_ID = -1001761446795
 
 refs = None
 with open('refs.json', 'r', encoding='utf-8') as f:
