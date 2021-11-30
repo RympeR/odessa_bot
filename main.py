@@ -23,7 +23,10 @@ bot = Bot(BOT_TOKEN, parse_mode="HTML")
 
 message_delay = 15
 
-@dp.message()
+@dp.message(content_types=["new_chat_members"])
+async def on_user_joind(message: types.Message):
+    await message.delete()
+
 
 @dp.message(commands=['reflink'], commands_prefix='/')
 async def filter_message(message: types.Message):
