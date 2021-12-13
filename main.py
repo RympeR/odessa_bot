@@ -7,6 +7,7 @@ from aiogram.dispatcher import router
 import time
 from datetime import datetime, timedelta
 import json
+from .api_patch import *
 
 BOT_TOKEN = "2125858661:AAE8aIV6joGpotg7dQ_dmDuZQnNn7PwsxTE"
 TEST_CHAT_ID = -1001698115602
@@ -23,9 +24,43 @@ bot = Bot(BOT_TOKEN, parse_mode="HTML")
 
 message_delay = 15
 
+
 @dp.message(content_types=["new_chat_members"])
+async def on_user_joined(message: types.Message):
+    await message.delete()
+
+
+@dp.message(commands=['cproduct'], commands_prefix='/')
+async def create_product(message: types.Message):
+    await message.delete()
+
+
+@dp.message(commands=['uproduct'], commands_prefix='/')
+async def update_product(message: types.Message):
+    await create_product(1, '', '')
+    await message.delete()
+
+
+@dp.message(commands=['rproduct'], commands_prefix='/')
 async def on_user_joind(message: types.Message):
     await message.delete()
+
+
+@dp.message(commands=['shop'], commands_prefix='/')
+async def on_user_joind(message: types.Message):
+    await message.delete()
+
+
+@dp.message(commands=['contacts'], commands_prefix='/')
+async def contacts(message: types.Message):
+    await message.answer(
+        '''
+            По вопросам бота и рекламы
+            Связь
+                @Rymperit
+                @drugpostarshe
+        '''
+    )
 
 
 @dp.message(commands=['reflink'], commands_prefix='/')
