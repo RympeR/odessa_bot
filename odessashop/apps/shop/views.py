@@ -59,13 +59,20 @@ class CategoryListAPI(generics.ListAPIView):
     permissions = permissions.AllowAny,
     queryset = Category.objects.all()
     serializer_class = CategoryGetSerializer
-    filterset_class = CardFilteredAPI
+    
+
+class ShopListAPI(generics.ListAPIView):
+    permissions = permissions.AllowAny,
+    queryset = Shop.objects.all()
+    serializer_class = ShortShopSerializer
+    
 
 
 class CardGetAPI(generics.RetrieveAPIView):
     permissions = permissions.AllowAny,
     queryset = Card.objects.all()
     serializer_class = CardGetSerializer
+    filterset_class = CardFilteredAPI
 
     def get_serializer_context(self):
         return {'request': self.request}

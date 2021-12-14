@@ -9,6 +9,7 @@ urlpatterns = [
     path('card-delete/<int:pk>', CardDeleteAPI.as_view(), name=''),
     path('card-partial-update/<int:pk>', CardPartialUpdateAPI.as_view(), name=''),
     path('shop-create/', ShopCreateAPI.as_view(), name=''),
+    path('shop-list/', ShopListAPI.as_view(), name=''),
     path('shop-delete/<int:pk>', ShopDeleteAPI.as_view(), name=''),
     path('shop-get/<int:pk>', ShopGetAPI.as_view(), name=''),
     path('shop-get-by-category/<int:pk>', ShopsGetByCategory.as_view(), name=''),
