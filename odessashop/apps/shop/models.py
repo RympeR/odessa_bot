@@ -16,6 +16,7 @@ FILE_TYPES = (
     ('audio', 'audio'),
 )
 
+
 class Attachment(models.Model):
     attachment = models.FileField("Файл", null=True, blank=True)
     attachment_type = models.CharField(
@@ -24,39 +25,6 @@ class Attachment(models.Model):
     class Meta:
         verbose_name = 'Вложение'
         verbose_name_plural = 'Вложения'
-
-
-class Shop(models.Model):
-    owner = models.CharField('User', max_length=255)
-    name = models.CharField(max_length=255, verbose_name='Название')
-    logo = ProcessedImageField(
-        verbose_name='Логотип',
-        upload_to=preview_cards,
-        processors=[ResizeToFill(120, 120)],
-        options={'quality': 100})
-    description = models.TextField(
-        verbose_name='Описание', null=True, blank=True)
-
-    def admin_preview(self):
-        if hasattr(self.logo, 'url') and self.logo:
-            return mark_safe('<img src="{}" width="100" /'.format(self.logo.url))
-        return None
-
-    def average_rate(self):
-        return (
-            self.shop_rate.all().aggregate(Avg('rate')).get(
-                'rate__avg', 0) if self.shop_rate.all() else 0
-        )
-
-    admin_preview.short_description = 'Превью'
-    admin_preview.allow_tags = True
-
-    class Meta:
-        verbose_name = 'Магазин'
-        verbose_name_plural = 'Магазины'
-
-    def __str__(self):
-        return f"{self.name}"
 
 
 class Category(MPTTModel):
@@ -87,6 +55,41 @@ class Category(MPTTModel):
         verbose_name_plural = 'Категории товаров'
 
 
+class Shop(models.Model):
+    owner = models.CharField('User', max_length=255)
+    name = models.CharField(max_length=255, verbose_name='Название')
+    logo = ProcessedImageField(
+        verbose_name='Логотип',
+        upload_to=preview_cards,
+        processors=[ResizeToFill(120, 120)],
+        options={'quality': 100})
+    description = models.TextField(
+        verbose_name='Описание', null=True, blank=True)
+    category = models.ForeignKey(
+        Category, related_name='shop_category', verbose_name='Категория товара', null=True, on_delete=models.SET_NULL,)
+
+    def admin_preview(self):
+        if hasattr(self.logo, 'url') and self.logo:
+            return mark_safe('<img src="{}" width="100" /'.format(self.logo.url))
+        return None
+
+    def average_rate(self):
+        return (
+            self.shop_rate.all().aggregate(Avg('rate')).get(
+                'rate__avg', 0) if self.shop_rate.all() else 0
+        )
+
+    admin_preview.short_description = 'Превью'
+    admin_preview.allow_tags = True
+
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Card(models.Model):
 
     title = models.CharField(max_length=100, verbose_name='Название')
@@ -105,7 +108,7 @@ class Card(models.Model):
         auto_now_add=True, verbose_name='Время создания')
     attachments = models.ManyToManyField(
         Attachment, related_name='card_attachments', verbose_name='Вложения')
-        
+
     def admin_preview(self):
         if hasattr(self.preview, 'url') and self.preview:
             return mark_safe('<img src="{}" width="100" /'.format(self.preview.url))

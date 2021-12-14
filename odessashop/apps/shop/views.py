@@ -59,6 +59,7 @@ class CategoryListAPI(generics.ListAPIView):
     permissions = permissions.AllowAny,
     queryset = Category.objects.all()
     serializer_class = CategoryGetSerializer
+    filterset_class = CardFilteredAPI
 
 
 class CardGetAPI(generics.RetrieveAPIView):
@@ -124,3 +125,21 @@ class ShopPartialUpdateAPI(GenericAPIView, UpdateModelMixin):
 
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
+
+
+class ShopsGetByCategory(GenericAPIView):
+    serializer_class = ShortShopSerializer
+    queryset = Shop.objects.all()
+
+    def get(self, request, category_id):
+        queryset = Shop.objects.filter(category__pk=category_id)
+        return Response(self.serializer_class(instance=queryset, many=True).data)
+
+
+class ShopsGetByUsername(GenericAPIView):
+    serializer_class = ShortShopSerializer
+    queryset = Shop.objects.all()
+
+    def get(self, request, username: str):
+        queryset = Shop.objects.filter(owner=username)
+        return Response(self.serializer_class(instance=queryset, many=True).data)

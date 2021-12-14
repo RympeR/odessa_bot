@@ -11,5 +11,7 @@ urlpatterns = [
     path('shop-create/', ShopCreateAPI.as_view(), name=''),
     path('shop-delete/<int:pk>', ShopDeleteAPI.as_view(), name=''),
     path('shop-get/<int:pk>', ShopGetAPI.as_view(), name=''),
+    path('shop-get-by-category/<int:pk>', ShopsGetByCategory.as_view(), name=''),
+    path('shop-get-by-username/<str:username>', ShopsGetByUsername.as_view(), name=''),
     path('shop-partial-update/<int:pk>', ShopPartialUpdateAPI.as_view(), name=''),
 ]
